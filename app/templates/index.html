@@ -1,0 +1,40 @@
+<head><script src="{{ url_for('static', filename='js/index.js') }}"></script></head>
+<body onload="hide()"></body>
+{% extends "base.html" %}
+<title>{{title}}
+{% block content %}
+<div align='center'><span style="color: red;float:center;">{{error}}</span>
+    {%if not current_user.is_authenticated()%}
+	<span style="color: red;text-align:center;">Sign in to add details</span></div>{%endif%}{%if current_user.is_authenticated() and not current_user.confirm%}<div style="color: red;text-align:center;">please confirm your email{%endif%}</div>
+<div align="center">
+    <table border="1">
+  	<tr>
+    		<th>Id</th>
+    		<th>Name</th>
+		<th>Subject</th>
+		<th>Mark</th>
+		{%if current_user.is_authenticated()%}
+		<th>Edit</th>
+		{%endif%}
+  	</tr>
+    {% for post in posts %}
+	<tr><form action="" method="post" name="post">{{ form.hidden_tag() }}<input name='idid' class="idid" value='{{post[0]}}' id='idid' style="display:None"></input>
+    		<td>{{post[0]}}</td>
+   		<td value={{post[1]}} name='tname' id={{post[0]}}>{{post[1]}}<span class='tname' name={{post[0]}}><input value="{{post[1]}}" type='text' name='tname{{post[0]}}' required></span></td>
+		<td value={{post[2]}} name='tsubject' id={{post[0]}}>{{post[2]}}<span class='tsubject' name={{post[0]}}><input value="{{post[2]}}" type='text' name='tsubject{{post[0]}}' required></span></td>
+		<td>{{post[3]}}<span class='tname' name={{post[0]}}><input type='text' value="{{post[3]}}" name='tmark{{post[0]}}' required></span></td>
+		{%if current_user.is_authenticated()%}<td><button type="button" id="button{{post[0]}}" name="bedit"value="edit" onclick="makevisible({{post[0]}})">edit</button><button class="hbutton" type="submit" id="hbutton{{post[0]}}" name="edit"value="edit" onclick="makevisible({{post[0]}})">update</button><button type="submit" id="delete{{post[0]}}" name="delete" value="delete" onclick="return confirm('Once you deleted a RECORD, you cannot undo that. are you sure?')">delete</button></td>
+{%endif%}  	</tr></form>
+    {% endfor %}
+    </table>
+<hr>
+{%if current_user.is_authenticated()%}
+	<form action="" method="post" name="post">
+	{{ form.hidden_tag() }}
+	name{{form.name(value='')}}<br>
+	subject{{form.subject(value='')}}<br>
+	mark{{form.mark(value='')}}
+	<p><input name="submit" type="submit"  value="submit"></p>
+	</form>
+{%endif%}</div>
+{% endblock %}
